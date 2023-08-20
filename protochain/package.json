@@ -1,0 +1,15 @@
+{
+  "name": "protochain",
+  "version": "1.0.0",
+  "description": "Protochain project.",
+  "main": "index.js",
+  "scripts": {
+    "compile": "npx tsc",
+    "start": "node ./dist/blockchain.js"
+  },
+  "author": "Thiago Soares Figueiredo",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.1.6"
+  }
+}
