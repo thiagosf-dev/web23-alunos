@@ -2,8 +2,7 @@ import sha256 from 'crypto-js/sha256';
 import Validation from './validation';
 
 /**
- * @class Block
- * @description Block class
+ * Block class
  */
 export default class Block {
   data: string;
@@ -13,17 +12,15 @@ export default class Block {
   timestamp: number;
 
   /**
-   * @description Block constructor
-   * @param index The block hash
-   * @param previousHash The previous block hash
-   * @param data The block data
+   * Creates a new block
+   * @param block The block data
    */
-  constructor(index: number, previousHash: string, data: string) {
-    this.index = index;
-    this.timestamp = Date.now();
-    this.previousHash = previousHash;
-    this.data = data;
-    this.hash = this.getHash();
+  constructor(block?: Block) {
+    this.index = block?.index || 0;
+    this.timestamp = block?.timestamp || Date.now();
+    this.previousHash = block?.previousHash || "";
+    this.data = block?.data || "";
+    this.hash = block?.hash || this.getHash();
   }
 
   getHash(): string {
