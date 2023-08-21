@@ -7,7 +7,8 @@
     "compile": "npx tsc",
     "dev": "npx nodemon --watch ./src/ --exec npx ts-node ./src/lib/blockchain.ts -e ts",
     "start": "node ./dist/blockchain.js",
-    "test": "jest --passWithNoTests"
+    "test": "jest --passWithNoTests",
+    "blockchain": "ts-node ./src/server/blockchainServer.ts"
   },
   "author": "Thiago Soares Figueiredo",
   "license": "MIT",
