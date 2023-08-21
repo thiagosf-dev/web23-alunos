@@ -11,4 +11,10 @@ Module 1. A proto-blockchain project.
 >   - SHA-256 *(Secure Hash Algoritm 256bit)*
 > - crypto-js
 >   - ```npm i crypto-js```
+> - express
+>   - ```npm i express```
+>   - ```npm i -D @types/express```
+> - morgan
+>   - ```npm i morgan```
+>   - ```npm i -D @types/morgan```
 >
