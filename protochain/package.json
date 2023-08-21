@@ -5,11 +5,20 @@
   "main": "index.js",
   "scripts": {
     "compile": "npx tsc",
-    "start": "node ./dist/blockchain.js"
+    "dev": "npx nodemon --watch ./src/ --exec npx ts-node ./src/lib/blockchain.ts -e ts",
+    "start": "node ./dist/blockchain.js",
+    "test": "jest --passWithNoTests"
   },
   "author": "Thiago Soares Figueiredo",
   "license": "MIT",
   "devDependencies": {
+    "@types/jest": "^29.5.3",
+    "@types/mocha": "^10.0.1",
+    "jest": "^29.6.2",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.1.6"
+  },
+  "dependencies": {
+    "ts-node": "^10.9.1"
   }
 }
