@@ -23,6 +23,14 @@ describe("BlockchainServer Tests", () => {
     expect(response.body.index).toEqual(0);
   });
 
+  test("GET /blocks/next - Should get next block info", async () => {
+    const response = await request(app)
+      .get("/blocks/next");
+
+    expect(response.status).toEqual(200);
+    expect(response.body.index).toEqual(1);
+  });
+
   test("GET /blocks/:hash - Should get block", async () => {
     const response = await request(app)
       .get("/blocks/abc");
