@@ -17,4 +17,6 @@ Module 1. A proto-blockchain project.
 > - morgan
 >   - ```npm i morgan```
 >   - ```npm i -D @types/morgan```
+> - supertest
+>   - ```npm i -D supertest @types/supertest```
 >
