@@ -6,6 +6,7 @@ import Blockchain from './../lib/blockchain';
 const PORT: number = 3000;
 
 const app = express();
+
 app.use(morgan("tiny"));
 app.use(express.json());
 
@@ -41,7 +42,11 @@ app.post("/blocks", (req, res) => {
   if (validation.success)
     return res.status(201).json(block);
   else
-    return res.status(404).json(validation);
+    return res.status(400).json(validation);
 });
 
 app.listen(PORT, () => console.log(`Blockchain server is running at ${PORT}`));
+
+export {
+  app,
+};
