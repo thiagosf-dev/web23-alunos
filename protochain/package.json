@@ -7,7 +7,7 @@
     "compile": "npx tsc",
     "dev": "npx nodemon --watch ./src/ --exec npx ts-node ./src/lib/blockchain.ts -e ts",
     "start": "node ./dist/blockchain.js",
-    "test": "jest --passWithNoTests --detectOpenHandles --forceExit --clearMocks --colors --expand --silent --useStderr --useStderr",
+    "test": "jest --passWithNoTests --detectOpenHandles --forceExit --clearMocks --colors --silent",
     "blockchain": "ts-node ./src/server/blockchainServer.ts --run"
   },
   "author": "Thiago Soares Figueiredo",
