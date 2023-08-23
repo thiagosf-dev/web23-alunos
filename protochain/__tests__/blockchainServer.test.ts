@@ -2,6 +2,7 @@ import { describe, expect, jest, test } from '@jest/globals';
 import request from 'supertest';
 import Block from '../src/lib/block';
 import { app } from '../src/server/blockchainServer';
+import Transaction from '../src/lib/transaction';
 
 jest.mock("../src/lib/block");
 jest.mock("../src/lib/blockchain");
@@ -75,5 +76,24 @@ describe("BlockchainServer Tests", () => {
       .send(block);
 
     expect(response.status).toEqual(400);
+  });
+
+  test("GET /transactions/:hash - Should get transaction", async () => {
+    const response = await request(app)
+      .get("/transactions/abc");
+
+    expect(response.status).toEqual(200);
+    expect(response.body.mempoolIndex).toEqual(0);
+  });
+
+  test("POST /transactions - Should add tx", async () => {
+    const tx = new Transaction({
+      data: "tx1",
+    } as Transaction);
+    const response = await request(app)
+      .post("/transactions")
+      .send(tx);
+
+    expect(response.status).toEqual(201);
   });
 });

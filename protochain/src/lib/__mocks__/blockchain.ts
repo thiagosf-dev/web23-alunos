@@ -1,20 +1,23 @@
 import BlockInfo from "../blockInfo";
-import Transaction from "./transaction";
+import TransactionSearch from "../transactionSearch";
+import TransactionType from "../transactionType";
 import Validation from "../validation";
 import Block from "./block";
-import TransactionType from "../transactionType";
+import Transaction from "./transaction";
 
 /**
  * Mocked Blockchain class
  */
 export default class Blockchain {
   blocks: Block[];
+  mempool: Transaction[];
   nextIndex: number = 0;
 
   /**
    * Creates a new mock blockchain
    */
   constructor() {
+    this.mempool = [] as Transaction[];
     this.blocks = [new Block({
       index: 0,
       hash: "abc",
@@ -41,6 +44,23 @@ export default class Blockchain {
     return new Validation();
   }
 
+  addTransaction(transaction: Transaction): Validation {
+    const validation = transaction.isValid();
+    if (!validation.success) return validation;
+
+    this.mempool.push(transaction);
+    return new Validation();
+  }
+
+  getTransaction(hash: String): TransactionSearch {
+    return {
+      mempoolIndex: 0,
+      transaction: {
+        hash,
+      },
+    } as TransactionSearch;
+  }
+
   getBlock(hash: string): Block | undefined {
     return this.blocks.find(b => b.hash === hash);
   }
@@ -48,7 +68,6 @@ export default class Blockchain {
   isValid(): Validation {
     return new Validation();
   }
-
 
   getFeePerTx(): number {
     return 1;

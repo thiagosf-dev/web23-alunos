@@ -15,7 +15,7 @@
 >   - ```npm i jest```
 >   - ```npx jest --init```
 
-## 👁 Module 2. A server proto-blockchain project
+## 👁 Module 2. A proto-server project
 
 > - express
 >   - ```npm i express```
@@ -26,7 +26,7 @@
 > - supertest
 >   - ```npm i -D supertest @types/supertest```
 
-## 👁 Module 3. A client proto-blockchain project
+## 👁 Module 3. A proto-client project
 
 > - axios
 >   - ```npm i axios```
@@ -34,3 +34,7 @@
 > - dotenv
 >   - ```npm i dotenv```
 >   - ```npm i -D @types/express```
+
+## 👁 Module 4. A transaction module
+
+## 👁 Module 5. A mempool module

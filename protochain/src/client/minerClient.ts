@@ -5,7 +5,8 @@ import axios from "axios";
 import Block from "../lib/block";
 import BlockInfo from "../lib/blockInfo";
 
-const BLOCKCHAIN_SERVER = process.env.BLOCKCHAIN_SERVER;
+// const BLOCKCHAIN_SERVER = `${process.env.BLOCKCHAIN_SERVER}`;
+const BLOCKCHAIN_SERVER = `http://localhost:3000`;
 
 const minerWallet = {
   privateKey: "123456",
@@ -17,6 +18,13 @@ let totalMined = 0;
 
 async function mine() {
   const { data } = await axios.get<BlockInfo>(`${BLOCKCHAIN_SERVER}/blocks/next`);
+  if (!data) {
+    console.info("No tx found. Waiting...");
+    return setTimeout(() => {
+      mine();
+    }, 5000);
+  }
+
   const blockInfo = data as BlockInfo;
 
   const newBlock = Block.fromBlockInfo(blockInfo);
