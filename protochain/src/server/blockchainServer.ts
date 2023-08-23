@@ -1,18 +1,25 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 import express, { Request, Response } from 'express';
 import morgan from 'morgan';
 import Block from '../lib/block';
 import Blockchain from './../lib/blockchain';
 
-const PORT: number = 3000;
+/* c8 ignore next */
+const PORT: number = parseInt(`${process.env.BLOCKCHAIN_PORT || 3000}`);
 
 const app = express();
 
+/* c8 ignore start */
 app.use(morgan("tiny"));
+/* c8 ignore end */
+
 app.use(express.json());
 
 const blockchain = new Blockchain();
 
-app.get("/status", (_req: Request , res: Response) => {
+app.get("/status", (_req: Request, res: Response) => {
   return res.json({
     numberOfblocks: blockchain.blocks.length,
     isValid: blockchain.isValid(),
@@ -49,9 +56,10 @@ app.post("/blocks", (req: Request, res: Response) => {
     return res.status(400).json(validation);
 });
 
-app.listen(PORT, () => {
-  console.log(`Blockchain server is running at ${PORT}`)
-});
+/* c8 ignore start */
+if (process.argv.includes("--run"))
+  app.listen(PORT, () => console.log(`Blockchain server is running at ${PORT}`));
+/* c8 ignore end */
 
 export {
   app,

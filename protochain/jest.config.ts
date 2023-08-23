@@ -22,7 +22,7 @@ export default {
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
     "<rootDir>/src/lib/**/*.ts",
-    "<rootDir>/src/server/**/*.ts",
+    "<rootDir>/src/server/**/*.ts"
   ],
 
   // The directory where Jest should output its coverage files
@@ -134,7 +134,7 @@ export default {
   // runner: "jest-runner",
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  // setupFiles: [],
+  setupFiles: ["dotenv/config"],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   // setupFilesAfterEnv: [],
@@ -156,7 +156,7 @@ export default {
 
   // The glob patterns Jest uses to detect test files
   testMatch: [
-    "**/__tests__/**/*.ts",
+    "**/__tests__/**/*.ts"
   ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
