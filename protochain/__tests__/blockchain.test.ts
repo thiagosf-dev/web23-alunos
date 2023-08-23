@@ -1,9 +1,11 @@
 import { describe, expect, jest, test } from '@jest/globals';
 
-import Blockchain from "../src/lib/blockchain";
 import Block from "../src/lib/block";
+import Blockchain from "../src/lib/blockchain";
+import Transaction from '../src/lib/transaction';
 
 jest.mock("../src/lib/block");
+jest.mock("../src/lib/transaction");
 
 describe("Blockchain tests", () => {
 
@@ -22,7 +24,9 @@ describe("Blockchain tests", () => {
     blockchain.addBlock(new Block({
       index: 1,
       previousHash: blockchain.blocks[0].hash,
-      data: "Block 2",
+      transactions: [new Transaction({
+        data: "block 2",
+      } as Transaction)] as Transaction[],
     } as Block));
     expect(blockchain.isValid().success).toEqual(true);
   });
@@ -32,7 +36,9 @@ describe("Blockchain tests", () => {
     blockchain.addBlock(new Block({
       index: 1,
       previousHash: blockchain.blocks[0].hash,
-      data: "Block 2",
+      transactions: [new Transaction({
+        data: "block 2",
+      } as Transaction)] as Transaction[],
     } as Block));
     blockchain.blocks[1].index = -1;
     expect(blockchain.isValid().success).toEqual(false);
@@ -43,7 +49,9 @@ describe("Blockchain tests", () => {
     const result = blockchain.addBlock(new Block({
       index: 1,
       previousHash: blockchain.blocks[0].hash,
-      data: "Block 2",
+      transactions: [new Transaction({
+        data: "block 2",
+      } as Transaction)] as Transaction[],
     } as Block));
     expect(result.success).toEqual(true);
   });
@@ -59,7 +67,9 @@ describe("Blockchain tests", () => {
     const block = new Block({
       index: -1,
       previousHash: blockchain.blocks[0].hash,
-      data: "Block 2",
+      transactions: [new Transaction({
+        data: "block 2",
+      } as Transaction)] as Transaction[],
     } as Block);
     const result = blockchain.addBlock(block);
     expect(result.success).toEqual(false);
