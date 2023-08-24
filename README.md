@@ -38,3 +38,10 @@
 ## 👁 Module 4. A transaction module
 
 ## 👁 Module 5. A mempool module
+
+## 👁 Module 6. A proto-wallet project
+
+> - ecpair
+>   - ```npm i ecpair```
+> - tiny-secp256k1
+>   - ```npm i tiny-secp256k1```

@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>89/89</span>
+                <span class='fraction'>104/104</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>18/18</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>89/89</span>
+                <span class='fraction'>104/104</span>
             </div>
         
             
@@ -152,7 +152,21 @@
 <a name='L87'></a><a href='#L87'>87</a>
 <a name='L88'></a><a href='#L88'>88</a>
 <a name='L89'></a><a href='#L89'>89</a>
-<a name='L90'></a><a href='#L90'>90</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L90'></a><a href='#L90'>90</a>
+<a name='L91'></a><a href='#L91'>91</a>
+<a name='L92'></a><a href='#L92'>92</a>
+<a name='L93'></a><a href='#L93'>93</a>
+<a name='L94'></a><a href='#L94'>94</a>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a>
+<a name='L99'></a><a href='#L99'>99</a>
+<a name='L100'></a><a href='#L100'>100</a>
+<a name='L101'></a><a href='#L101'>101</a>
+<a name='L102'></a><a href='#L102'>102</a>
+<a name='L103'></a><a href='#L103'>103</a>
+<a name='L104'></a><a href='#L104'>104</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -241,14 +255,29 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import dotenv from 'dotenv';
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span></td><td class="text"><pre class="prettyprint lang-js">import dotenv from 'dotenv';
 dotenv.config();
 &nbsp;
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import morgan from 'morgan';
 import Block from '../lib/block';
-import Blockchain from './../lib/blockchain';
+import Blockchain from '../lib/blockchain';
 import Transaction from '../lib/transaction';
+import Wallet from '../lib/wallet';
 &nbsp;
 /* c8 ignore next */
 const PORT: number = parseInt(`${process.env.BLOCKCHAIN_PORT || 3000}`);
@@ -256,88 +285,101 @@ const PORT: number = parseInt(`${process.env.BLOCKCHAIN_PORT || 3000}`);
 const app = express();
 &nbsp;
 /* c8 ignore start */
-app.use(morgan("tiny"));
+if (process.argv.includes("--run"))
+    app.use(morgan('tiny'));
 /* c8 ignore end */
 &nbsp;
 app.use(express.json());
 &nbsp;
-const blockchain = new Blockchain();
+const wallet = new Wallet(process.env.BLOCKCHAIN_WALLET);
+const blockchain = new Blockchain(wallet.publicKey);
 &nbsp;
-app.get("/status", (_req: Request, res: Response) =&gt; {
-  return res.json({
-    numberOfblocks: blockchain.blocks.length,
-    isValid: blockchain.isValid(),
-    lastBlock: blockchain.getLastBlock(),
-  });
-});
+app.get('/status', (req, res, next) =&gt; {
+    res.json({
+        mempool: blockchain.mempool.length,
+        blocks: blockchain.blocks.length,
+        isValid: blockchain.isValid(),
+        lastBlock: blockchain.getLastBlock()
+    })
+})
 &nbsp;
-app.get("/blocks/next", (req: Request, res: Response) =&gt; {
-  return res.json(blockchain.getNextBlock());
-});
+app.get('/blocks/next', (req: Request, res: Response, next: NextFunction) =&gt; {
+    res.json(blockchain.getNextBlock());
+})
 &nbsp;
-app.get("/blocks/:indexOrHash", (req: Request, res: Response) =&gt; {
-  let block: Block[] | Block | undefined;
-  if (/^[0-9]+$/.test(req.params.indexOrHash))
-    block = blockchain.blocks[parseInt(req.params.indexOrHash)];
-  else
-    block = blockchain.getBlock(req.params.indexOrHash);
+app.get('/blocks/:indexOrHash', (req: Request, res: Response, next: NextFunction) =&gt; {
+    let block;
+    if (/^[0-9]+$/.test(req.params.indexOrHash))
+        block = blockchain.blocks[parseInt(req.params.indexOrHash)];
+    else
+        block = blockchain.getBlock(req.params.indexOrHash);
 &nbsp;
-  if (!block)
-    return res.sendStatus(404);
-  else
-    return res.json(block);
-});
+    if (!block)
+        return res.sendStatus(404);
+    else
+        return res.json(block);
+})
 &nbsp;
-app.post("/blocks", (req: Request, res: Response) =&gt; {
-  if (req.body.hash === undefined) return res.sendStatus(422);
+app.post('/blocks', (req: Request, res: Response, next: NextFunction) =&gt; {
+    if (req.body.hash === undefined) return res.sendStatus(422);
 &nbsp;
-  const block = new Block(req.body as Block);
-  const validation = blockchain.addBlock(block);
+    const block = new Block(req.body as Block);
+    const validation = blockchain.addBlock(block);
 &nbsp;
-  if (validation.success)
-    return res.status(201).json(block);
-  else
-    return res.status(400).json(validation);
-});
+    if (validation.success)
+        res.status(201).json(block);
+    else
+        res.status(400).json(validation);
+})
 &nbsp;
-app.get("/transactions/:hash?", (req: Request, res: Response) =&gt; {
-  if (req.params.hash)
-    return res.json(blockchain.getTransaction(req.params.hash));
-  else
-    return res.json({
-      next: blockchain.mempool.slice(0, Blockchain.TX_PER_BLOCK),
-      total: blockchain.mempool.length,
-    });
-});
+app.get('/transactions/:hash?', (req: Request, res: Response, next: NextFunction) =&gt; {
 &nbsp;
-app.post("/transactions", (req: Request, res: Response) =&gt; {
-  if (req.body.hash === undefined) return res.sendStatus(422);
+    if (req.params.hash)
+        res.json(blockchain.getTransaction(req.params.hash));
+    else
+        res.json({
+            next: blockchain.mempool.slice(0, Blockchain.TX_PER_BLOCK),
+            total: blockchain.mempool.length
+        });
+})
 &nbsp;
-  const tx = new Transaction(req.body as Transaction);
-  const validation = blockchain.addTransaction(tx);
+app.post('/transactions', (req: Request, res: Response, next: NextFunction) =&gt; {
+    if (req.body.hash === undefined) return res.sendStatus(422);
 &nbsp;
-  if (validation.success)
-    return res.status(201).json(tx);
-  else
-    return res.status(400).json(validation);
-});
+    const tx = new Transaction(req.body as Transaction);
+    const validation = blockchain.addTransaction(tx);
+&nbsp;
+    if (validation.success)
+        res.status(201).json(tx);
+    else
+        res.status(400).json(validation);
+})
+&nbsp;
+app.get('/wallets/:wallet', (req: Request, res: Response, next: NextFunction) =&gt; {
+    const wallet = req.params.wallet;
+&nbsp;
+    const utxo = blockchain.getUtxo(wallet);
+    const balance = blockchain.getBalance(wallet);
+    const fee = blockchain.getFeePerTx();
+&nbsp;
+    return res.json({ balance, fee, utxo })
+})
 &nbsp;
 /* c8 ignore start */
 if (process.argv.includes("--run"))
-  app.listen(PORT, () =&gt; console.log(`Blockchain server is running at ${PORT}`));
+    app.listen(PORT, () =&gt; console.log(`Blockchain server is running at ${PORT}. Wallet: ${wallet.publicKey}`));
 /* c8 ignore end */
 &nbsp;
 export {
-  app,
-};
-&nbsp;</pre></td></tr></table></pre>
+    app
+}</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
             </div><!-- /wrapper -->
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-08-23T20:30:07.419Z
+                at 2023-08-24T06:34:17.768Z
             </div>
         <script src="../prettify.js"></script>
         <script>

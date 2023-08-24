@@ -1,5 +1,5 @@
-/**
- * For a detailed explanation regarding each configuration property, visit:
+/*
+ * For a detailed explanation regarding each configuration property and type check, visit:
  * https://jestjs.io/docs/configuration
  */
 
@@ -11,7 +11,7 @@ export default {
   // bail: 0,
 
   // The directory where Jest should store its cached dependency information
-  // cacheDirectory: "C:\\Users\\Thiago\\AppData\\Local\\Temp\\jest",
+  // cacheDirectory: "/private/var/folders/yw/r6vl1_zn59v7qpl_v4k30c180000gn/T/jest_dx",
 
   // Automatically clear mock calls, instances, contexts and results before every test
   clearMocks: true,
@@ -33,7 +33,7 @@ export default {
     "/node_modules/",
     "/src/lib/blockInfo.ts",
     "/src/lib/transactionType.ts",
-    "/src/lib/transactionSearch.ts",
+    "/src/lib/transactionSearch.ts"
   ],
 
   // Indicates which provider should be used to instrument code for coverage
@@ -42,7 +42,7 @@ export default {
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: [
     "text",
-    "lcov",
+    "lcov"
   ],
 
   // An object that configures minimum threshold enforcement for coverage results
@@ -163,7 +163,7 @@ export default {
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
+  //   "/node_modules/"
   // ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
@@ -180,8 +180,8 @@ export default {
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
-  //   "\\\\node_modules\\\\",
-  //   "\\.pnp\\.[^\\\\]+$"
+  //   "/node_modules/",
+  //   "\\.pnp\\.[^\\/]+$"
   // ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
